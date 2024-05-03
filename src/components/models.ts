@@ -1,6 +1,9 @@
-export interface Todo {
+export interface Movie {
   id: number;
-  content: string;
+  title: string;
+  director: string;
+  summary: string;
+  genres: [str: string];
 }
 
 export interface Meta {

@@ -1,1 +1,5 @@
 // app global css in SCSS form
+.gap-sm {
+  gap: $flex-gutter-sm;
+  // gap: map-get($space-xs, 'x');
+}
