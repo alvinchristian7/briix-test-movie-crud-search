@@ -1,10 +1,16 @@
 <template>
-  <q-page padding>
-    <q-form class="column-gap-md" @submit.prevent="onSubmit" @reset="onReset">
+  <q-page padding :class="formCSSOnDesktop.qPageClass">
+    <q-form
+      class="column gap-md"
+      @submit.prevent="onSubmit"
+      @reset="onReset"
+      :style="formCSSOnDesktop.formStyle"
+    >
       <q-input outlined v-model="movieTextForm.title" label="Title" />
       <q-input outlined v-model="movieTextForm.director" label="Director" />
       <q-input
         v-model="movieTextForm.summary"
+        maxlength="100"
         filled
         type="textarea"
         label="Summary"
@@ -16,7 +22,7 @@
             color="primary"
             text-color="white"
             icon="check_box_outline_blank"
-            size="md"
+            size="lg"
           >
             {{ genresMap.action }}
           </q-chip>
@@ -25,7 +31,7 @@
             color="teal"
             text-color="white"
             icon="check_box_outline_blank"
-            size="md"
+            size="lg"
           >
             {{ genresMap.animation }}
           </q-chip>
@@ -36,7 +42,7 @@
             color="orange"
             text-color="white"
             icon="check_box_outline_blank"
-            size="md"
+            size="lg"
           >
             {{ genresMap.drama }}
           </q-chip>
@@ -45,7 +51,7 @@
             color="red"
             text-color="white"
             icon="check_box_outline_blank"
-            size="md"
+            size="lg"
           >
             {{ genresMap['sci-fi'] }}
           </q-chip>
@@ -66,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive } from 'vue';
+import { computed, onMounted, onUnmounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { Genre, Movie } from 'src/components/models';
 import { useMoviesStore } from 'src/stores/movies';
@@ -76,7 +82,14 @@ import { genresMap } from 'src/utils/constants/genre';
 import MovieBus from 'src/event-bus/movie';
 
 const $q = useQuasar();
-
+const formCSSOnDesktop = computed(() =>
+  $q.platform.is.desktop
+    ? {
+        qPageClass: ['row', 'justify-center'],
+        formStyle: { maxWidth: '31.25rem' },
+      }
+    : {},
+);
 const defaultGenres = {
   action: false,
   animation: false,
