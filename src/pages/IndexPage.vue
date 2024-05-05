@@ -1,63 +1,49 @@
 <template>
-  <q-page padding class="column items-center gap-sm">
-    <q-input outlined v-model="searchText" label="Search by title" />
-    <movie-card
-      v-for="link in moviesDB"
-      :key="link.id"
-      v-bind="link"
-    ></movie-card>
+  <q-page padding class="column-gap-md">
+    <q-input outlined v-model="searchTextDebounced" label="Search by title" />
+    <div
+      v-if="haveMovies"
+      :class="['column-gap-sm', { 'full-width': $q.platform.is.mobile }]"
+    >
+      <template v-if="searchedResults.length > 0">
+        <movie-card
+          v-for="movie in searchedResults"
+          :key="movie.id"
+          v-bind="movie"
+        />
+      </template>
+      <div v-else>Search for "{{ searchTextDebounced }}" not found</div>
+    </div>
+    <div v-else class="column-gap-sm">
+      <div class="text-h6 text-bold text-center text-accent">
+        Add movie(s) to your collection first
+      </div>
+      <div class="row">
+        <q-icon name="arrow_downward" color="accent" v-for="n in 3" :key="n" />
+      </div>
+    </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Movie, Meta } from 'components/models';
 import MovieCard from 'src/components/MovieCard.vue';
+import { useMoviesStore } from 'src/stores/movies';
+import { useDebouncedRef } from 'src/utils/vue';
+import { computed, watch } from 'vue';
 
 // defineOptions({
 //   name: 'IndexPage',
 // });
 
-const moviesDB = ref<Movie[]>([
-  {
-    id: 1,
-    title: 'ct1',
-    director: 'ct1',
-    summary: '',
-    genres: ['ct1'],
-  },
-  {
-    id: 2,
-    title: 'ct2',
-    director: 'ct2',
-    summary: 'ct2',
-    genres: ['ct2'],
-  },
-  {
-    id: 3,
-    title: 'ct3',
-    director: 'ct3',
-    summary: 'ct3',
-    genres: ['ct3'],
-  },
-  {
-    id: 4,
-    title: 'ct4',
-    director: 'ct4',
-    summary: 'ct4',
-    genres: ['ct4'],
-  },
-  {
-    id: 5,
-    title: 'ct5',
-    director: 'ct5',
-    summary: 'ct5',
-    genres: ['ct5'],
-  },
-]);
+const movieStore = useMoviesStore();
 
-const meta = ref<Meta>({
-  totalCount: 1200,
+const searchTextDebounced = useDebouncedRef('', 300);
+watch(searchTextDebounced, () => {
+  console.log(searchTextDebounced.value);
 });
-const searchText = ref('');
+
+const searchedResults = computed(() =>
+  movieStore.searchMovies(searchTextDebounced.value),
+);
+const haveMovies = computed(() => movieStore.movies.length > 0);
 </script>

@@ -1,9 +1,11 @@
+export type Genre = 'action' | 'animation' | 'drama' | 'sci-fi';
+
 export interface Movie {
-  id: number;
+  id: string;
   title: string;
   director: string;
   summary: string;
-  genres: [str: string];
+  genres: Genre[];
 }
 
 export interface Meta {

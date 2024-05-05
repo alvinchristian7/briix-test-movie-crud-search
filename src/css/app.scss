@@ -1,5 +1,19 @@
 // app global css in SCSS form
+@import 'node_modules/quasar/src/css/index';
+
+.column-center {
+  @extend .column, .items-center;
+}
 .gap-sm {
   gap: $flex-gutter-sm;
   // gap: map-get($space-xs, 'x');
+}
+.gap-md {
+  gap: $flex-gutter-md;
+}
+.column-gap-sm {
+  @extend .column-center, .gap-sm;
+}
+.column-gap-md {
+  @extend .column-center, .gap-md;
 }
