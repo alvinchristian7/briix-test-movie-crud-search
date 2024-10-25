@@ -15,7 +15,17 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Movie, Meta } from './models';
+
+export interface Movie {
+  id: number;
+  title: string;
+  director: string;
+  summary: string;
+  genres: [str: string];
+}
+export interface Meta {
+  totalCount: number;
+}
 
 const props = withDefaults(defineProps<Movie>(), {
   summary: () => 'lorem ipsum',

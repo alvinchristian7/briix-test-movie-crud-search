@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Movie, Meta } from 'components/models';
+import { Movie, Meta } from 'components/MovieCard.vue';
 import MovieCard from 'src/components/MovieCard.vue';
 
 // defineOptions({
